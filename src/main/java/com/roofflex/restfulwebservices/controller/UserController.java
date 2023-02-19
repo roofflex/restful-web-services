@@ -3,6 +3,8 @@ package com.roofflex.restfulwebservices.controller;
 import com.roofflex.restfulwebservices.dto.UserDto;
 import com.roofflex.restfulwebservices.model.User;
 import com.roofflex.restfulwebservices.service.UserDaoService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
+    @Operation(summary = "Gets user by Id", description = "Gets user by Id")
     public ResponseEntity<User> getUser(@PathVariable int userId) {
         return ResponseEntity.ok()
                 .body(userDaoService.getById(userId));
