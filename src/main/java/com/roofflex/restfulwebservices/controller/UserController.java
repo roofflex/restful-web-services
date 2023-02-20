@@ -3,10 +3,11 @@ package com.roofflex.restfulwebservices.controller;
 import com.roofflex.restfulwebservices.dto.UserDto;
 import com.roofflex.restfulwebservices.model.User;
 import com.roofflex.restfulwebservices.service.UserDaoService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,6 +16,8 @@ import java.net.URI;
 import java.util.List;
 
 import static com.roofflex.restfulwebservices.model.User.user;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -31,9 +34,14 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     @Operation(summary = "Gets user by Id", description = "Gets user by Id")
-    public ResponseEntity<User> getUser(@PathVariable int userId) {
+    public ResponseEntity<EntityModel<User>> getUser(@PathVariable int userId) {
+        EntityModel<User> userModel = EntityModel.of(userDaoService.getById(userId));
+
+        Link link = linkTo(methodOn(this.getClass()).getAllUsers()).withRel("all-users");
+        userModel.add(link);
+
         return ResponseEntity.ok()
-                .body(userDaoService.getById(userId));
+                .body(userModel);
     }
 
     @PostMapping("/users")
