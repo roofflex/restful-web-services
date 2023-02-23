@@ -3,7 +3,6 @@ package com.roofflex.restfulwebservices.controller;
 import com.roofflex.restfulwebservices.model.HelloWorldBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

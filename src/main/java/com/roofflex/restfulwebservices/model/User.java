@@ -1,58 +1,32 @@
 package com.roofflex.restfulwebservices.model;
 
-import org.springframework.lang.NonNull;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Value;
 
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * User model
  */
+@Entity(name = "user")
+@Value
+@Builder
 public class User {
-    private final int id;
-    private final String name;
-    private final LocalDate birthDate;
+    // @Value will make all class fields private final during compilation
+    // (makes use of @FieldDefaults(makeFinal=true, level=AccessLevel.PRIVATE))
 
-    private static final AtomicInteger totalUsers = new AtomicInteger(0);
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
 
-    /**
-     * Private constructor since id shouldn't be set manually
-     *
-     * @param id        id
-     * @param name      name
-     * @param birthDate birth date
-     */
-    private User(int id, @NonNull String name, @NonNull LocalDate birthDate) {
-        this.id = id;
-        this.name = name;
-        this.birthDate = birthDate;
-    }
+    @Column(name = "name")
+    String name;
 
-    @NonNull
-    public static User user(@NonNull String name, @NonNull LocalDate birthDate) {
-        return new User(totalUsers.getAndIncrement(), name, birthDate);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    @NonNull
-    public String getName() {
-        return name;
-    }
-
-    @NonNull
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", birthDate=" + birthDate +
-                '}';
-    }
+    @Column(name = "birth_date")
+    LocalDate birthDate;
 }
