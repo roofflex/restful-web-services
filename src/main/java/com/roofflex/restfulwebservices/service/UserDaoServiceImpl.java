@@ -14,7 +14,7 @@ import static com.roofflex.restfulwebservices.exception.UserNotFoundException.us
 public class UserDaoServiceImpl implements UserDaoService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @NonNull
     @Override
@@ -30,19 +30,19 @@ public class UserDaoServiceImpl implements UserDaoService {
 
     @NonNull
     @Override
-    public User getById(int id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> userNotFoundException(id));
+    public User getById(int userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> userNotFoundException(userId));
     }
 
     @Override
-    public void deleteById(int id) {
-        boolean userExists = userRepository.existsById(id);
+    public void deleteById(int userId) {
+        boolean userExists = userRepository.existsById(userId);
 
         if (!userExists) {
-            throw userNotFoundException(id);
+            throw userNotFoundException(userId);
         }
 
-        userRepository.deleteById(id);
+        userRepository.deleteById(userId);
     }
 }
